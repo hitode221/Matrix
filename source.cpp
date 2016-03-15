@@ -4,10 +4,7 @@
 using namespace std;
 class Matrix{
 public:
-	Matrix(){
-		lines = columns = 0;
-		elements = nullptr;
-	}
+	Matrix() : elements(nullptr), lines(0), columns(0) {}
 	Matrix(int _lines, int _columns) : elements(new int *[_lines]), lines(_lines), columns(_columns) {
 		for (int i = 0; i < lines; i++){
 			elements[i] = new int[columns];
