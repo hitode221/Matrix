@@ -58,7 +58,7 @@ public:
 	int getColumns() const{
 		return columns;
 	}
-	Matrix operator=(const Matrix& second){
+	Matrix& operator=(const Matrix& second){
 		if (this != &second) {
 			Matrix(second).swapMatrix(*this);
 		}
