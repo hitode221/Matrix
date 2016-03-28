@@ -13,7 +13,22 @@ file(GLOB ${PROJECT_NAME}_sources "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 find_package(${TESTS_FOR_PROJECT})
 include_directories(${${TESTS_FOR_PROJECT}_INCLUDE_DIRS}})
 
-include(cmake/FindCPM.cmake)
+set(CPM_DIR "${CMAKE_CURRENT_BINARY_DIR}/cpm_packages" CACHE TYPE STRING)
+  find_package(Git)
+  if(NOT GIT_FOUND)
+    message(FATAL_ERROR "CPM requires Git.")
+  endif()
+  if (NOT EXISTS ${CPM_DIR}/CPM.cmake)
+    message(STATUS "Cloning repo (https://github.com/iauns/cpm)")
+    execute_process(
+      COMMAND "${GIT_EXECUTABLE}" clone https://github.com/iauns/cpm ${CPM_DIR}
+      RESULT_VARIABLE error_code
+      OUTPUT_QUIET ERROR_QUIET)
+    if(error_code)
+      message(FATAL_ERROR "CPM failed to get the hash for HEAD")
+    endif()
+  endif()
+  include(${CPM_DIR}/CPM.cmake)
 CPM_AddModule("cpm-catch"
   GIT_REPOSITORY "https://github.com/designerror/cpm-catch")
 include_directories(${CPM_INCLUDE_DIRS})
